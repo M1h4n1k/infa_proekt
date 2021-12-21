@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Проект по информатике</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <style>
+        html, body {
+            font-family: Arial, serif;
+            color: #333;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        #header{
+            display: flex;
+            align-items: center;
+            color: gray;
+            background-color: #f8f8f8;
+            border: #e7e7e7 solid 1px;
+            height: 50px;
+            position: relative;
+            width: 100%;
+            font-size: 25px;
+            padding-left: 3%;
+        }
+        #banner{
+            display: flex;
+            align-items: center;
+            width: 70%;
+            background-color: #eee;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 25px;
+            height: 250px;
+            border-radius: 6px;
+        }
+        #banner-wrapper {
+            font-size: 20px;
+            padding-left: 60px;
+        }
+        #banner-wrapper button{
+            background-color: cornflowerblue;
+            color: white;
+            border-radius: 5px;
+            border: none;
+            height: 40px;
+            width: 175px;
+        }
+        #banner-wrapper button:hover{
+            cursor: pointer;
+            background-color: #5985d4;
+        }
+        #banner-wrapper button:active{
+            background-color: #5076ba;
+        }
+        #adder{
+            min-width: 220px;
+            position: relative;
+            height: 250px;
+            width: 30%;
+            margin-left: 15%;
+            border-radius: 3px;
+            margin-top: 25px;
+            border-left: #ddd solid 1px;
+            border-right: #ddd solid 1px;
+            border-bottom: #ddd solid 1px;
+            border-top: #ddd solid 1px;
+        }
+
+        #adder input, textarea {
+            text-indent: 10px;
+            height: 100%;
+            width: 100%;
+            border-radius: 3px;
+            border: #ddd solid 1px;
+        }
+        #adder button{
+            background-color: #6495ED;
+            color: white;
+            border-radius: 5px;
+            border: none;
+            height: 30px;
+            width: 80px;
+            margin-top: 15px;
+            margin-left: 5%;
+        }
+        #adder button:hover {
+            cursor: pointer;
+            background-color: #5985d4;
+        }
+        #adder button:active{
+            background-color: #5076ba;
+        }
+        #adder label{
+            margin-left: 5%;
+            width: 90%;
+            position: relative;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        #adder-header {
+            border-radius: 2px 2px 0 0;
+            background-color: #f5f5f5;
+            height: 50px;
+            border-bottom: #ddd solid 1px;
+            padding: 0;
+        }
+
+        .events{
+            height: 100%;
+            min-width: 220px;
+            position: relative;
+            width: 37%;
+            margin-left: 3%;
+            border-radius: 3px;
+            margin-top: 25px;
+            border-left: #ddd solid 1px;
+            border-right: #ddd solid 1px;
+            border-bottom: #ddd solid 1px;
+            border-top: #ddd solid 1px;
+        }
+        .events :last-child{
+            border-bottom: none !important;
+        }
+        .event{
+            padding: 15px;
+            border-bottom: #ddd solid 1px;
+        }
+        .event h4 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .event h5{
+            font-weight: 100;
+            color: darkgrey;
+            margin-top: 3px;
+            margin-bottom: 0;
+        }
+        .event p{
+            margin-top: 5px;
+            margin-bottom: 0;
+        }
+        .event button{
+            background-color: #cc0000;
+            color: white;
+            border-radius: 5px;
+            border: none;
+            height: 30px;
+            width: 80px;
+            margin-top: 4px;
+        }
+        .event button:hover{
+            cursor: pointer;
+            background-color: #a60000;
+        }
+        .event button:active{
+            background-color: #700000;
+        }
+    </style>
+
+</head>
+<body>
+<div id="app">
+    <div id="header">
+        <div>
+            Проект по информатике
+        </div>
+    </div>
+
+    <div id="banner">
+        <div id="banner-wrapper">
+            <h2 style="margin-bottom: 0">Лучший список дел в мире!</h2>
+            <p style="margin-top: 10px; margin-bottom: 0">Сделан учениками 11-1 класса</p>
+            <button style="margin-top: 10px">Какая-то кнопка</button>
+        </div>
+    </div>
+    <div style="display: flex; margin-bottom: 25px">
+        <div id="adder">
+            <div id="adder-header">
+                <p style="margin: 0; padding-top: 15px; padding-left: 15px">Добавить событие</p>
+            </div>
+            <label style="height: 25px">
+                <input v-model="input_header" id="event-name" type="text" placeholder="Event Name"/>
+            </label>
+            <label id="event-desc" style="height: 40px">
+                <textarea v-model="input_description" placeholder="Event Description"></textarea>
+            </label>
+            <label id="event-date" style="height: 25px; margin-top: 7px">
+                <input v-model="input_date" type="date" placeholder="Event Description"/>
+            </label>
+            <br>
+            <button id="event-submit" @click="add_event">
+                Submit
+            </button>
+        </div>
+
+        <div class="events">
+            <div class="event" v-for="(ev, ind) in events">
+                <h4>{{ ev.header }}</h4>
+                <h5>{{ ev.date }}</h5>
+                <p>{{ ev.description }}</p>
+                <a :href="ev.link">Подробная инф-ция</a>
+                <br>
+                <button @click="delete_event(ind)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    let app = new Vue({
+        el: '#app',
+        data: {
+            input_header: null,
+            input_date: null,
+            input_description: null,
+            events: [
+                {
+                    header: 'Пасхальное событие',
+                    description: 'Посетить Kaif Burger',
+                    date: '2021-11-02',
+                    link: './event.html'
+                },
+            ]
+        },
+        methods: {
+            add_event: function() {
+                if (this.input_header === null ||
+                    this.input_date === null ||
+                    this.input_description === null){
+                    return;
+                }
+                this.events.unshift({
+                    header: this.input_header,
+                    description: this.input_description,
+                    date: this.input_date,
+                    link: './event.html'
+                })
+            },
+            delete_event: function (ind){
+                this.events.splice(ind, 1);
+            }
+        }
+    })
+
+</script>
+</html>
